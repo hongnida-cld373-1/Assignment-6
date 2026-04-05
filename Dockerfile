@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install
 
 # ✅ Copy only needed files
-COPY index.js .
+COPY app.js .
 COPY routes/ ./routes/
 COPY controllers/ ./controllers/
 
@@ -14,4 +14,4 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 
 EXPOSE 5000
-CMD ["node", "index.js"]
+CMD ["node", "app.js"]
