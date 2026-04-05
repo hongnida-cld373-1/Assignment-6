@@ -1,24 +1,24 @@
-# 1. Use a specific version (satisfies 'no latest tag' rule)
 FROM node:18-alpine
 
-# 2. Set working directory
+# Set the working directory
 WORKDIR /usr/src/app
 
-# 3. Copy package files
+# Copy dependency definitions
 COPY package*.json ./
 
-# 4. Install dependencies
+# Install only production dependencies
 RUN npm install --only=production
 
-# 5. Copy the rest of your code
+# Copy all project files (Safe with .dockerignore)
 COPY . .
 
-# 6. Create a non-root user and switch to it (CRITICAL for Quality Gate)
+# Security: Create and use a non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+# Ensure the user owns the directory to avoid permission issues
+RUN chown -R appuser:appgroup /usr/src/app
 USER appuser
 
-# 7. Expose the port
 EXPOSE 3000
 
-# 8. Start the application
+# Start the application
 CMD ["node", "app.js"]
