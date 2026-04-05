@@ -5,12 +5,12 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
-COPY . .
+# ✅ Copy only needed files
+COPY index.js .
+COPY routes/ ./routes/
+COPY controllers/ ./controllers/
 
-# ✅ Create non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-
-# ✅ Switch user
 USER appuser
 
 EXPOSE 5000
